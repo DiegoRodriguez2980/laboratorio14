@@ -1,0 +1,129 @@
+﻿@model List<Laboratorio12.Models.StudentModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"> Por favor ingrese los detalles a continuacion</h3>
+
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group col-md-5">
+                <label>Student Name</label>
+                <input type="text" name="StudentName" id="StudentName" class="form-control"
+                       placeholder="Ingrese Nombre de Estudiante" required="" />
+            </div>
+
+            <div class="form-group col-md-5">
+                <label>Student Address</label>
+                <input type="text" name="StudentAddress" id="StudentAddress" class="form-control"
+                       placeholder="Ingrese Direccion de Estudiante" required="" />
+            </div>
+
+            <div class="form-group col-md-1">
+                <div style="float: right; display: inline-block">
+                    <input type="button" class="btn btn-primary" name="SubmitButton"
+                           id="btnSave" value="Save" />
+                </div>
+            </div>
+        </div>
+    </div><hr />
+
+    <table id="tblStudent" class="table table-bordered table-striped table-responsive
+                 table-hover">
+        @*<thead>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <th align="left" class="productth">@item.ID </th>
+                    <th align="left" class="productth">@item.Name </th>
+                    <th align="left" class="productth">@item.Address </th>
+                </tr>
+            }
+        </thead>
+        <tbody>
+        </tbody>*@
+
+        <thead>
+
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>    
+                    <th align="left" class="productth">@item.studentID</th>
+                    <th align="left" class="productth">@item.studentName</th>
+                    <th align="left" class="productth">@item.studentAddress</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        $(function () {
+            //LoadData();
+
+            $("#btnSave").click(function () {
+                var std = {};
+                std.studentName = $("#StudentName").val();
+                std.studentAddress = $("#StudentAddress").val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("createStudent")',
+                    data: "{std: " + JSON.stringify(std) + "}",
+                    dataType: "json",
+                    contentType: "application/json: charset=utf-8",
+                    success: function () {
+                        LoadData();
+                    },
+                    error: function () {
+                        alert("Error while inserting data");
+                    }
+
+                });
+                return false;
+            });
+        });
+
+        @*function LoadData() {
+            $("#tblStudent tbody tr").remove();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getStudent")',
+                data: "{std: " + JSON.stringify(std) + "}",
+                dataType: "json",
+                data: { id: '' },
+                success: function (data) {
+                    var items = '';
+                    $.each(data, function (i, item) {
+                        var rows = "<tr>"
+                            + "<td class='prtoducttd'  " + item.studentID + "</td>"
+                            + "<td class='prtdoducttd' " + item.studentName + "</td>"
+                            + "<td class='prtdocucttd' " + item.studentAddress + "</td>"
+                            + "</tr>";
+                        $("#tblStudent tbody").append(rows);
+
+                    });
+                },
+                error: function (ex) {
+                    var r = jQuery.parseJSON(response.responseText);
+                    alert("Message: " + r.Message);
+                    alert("StackTrace: " + r.StackTrace);
+                    alert("ExceptionType: " + r.ExceptionType);
+
+                }
+            });
+            return false;
+        }*@
+    </script>
+
+}
